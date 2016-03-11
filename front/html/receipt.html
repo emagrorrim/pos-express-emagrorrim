@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Receipt</title>
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/jquery/jquery.js" charset="utf-8"></script>
+    <script src="../js/storage/storage.js" charset="utf-8"></script>
+
+    <script src="../js/receiptpage/receipt.js" charset="utf-8"></script>
+
+    <style media="screen">
+      .starline {
+        display: none;
+      }
+    </style>
+    <style media="print">
+      #backHomeBtn {
+        display: none;
+      }
+      .starline {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <button type="button" id="logoBtn" class="btn btn-default navbar-btn">
+            没钱赚商店
+          </button>
+          <button type="button" id="receiptBtn" class="btn btn-default navbar-btn pull-right">
+            购物记录
+          </button>
+          <button type="button" id="cartBtn"  class="btn btn-default navbar-btn pull-right">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            <span id="cartCount" class="badge"></span>
+          </button>
+      </div>
+    </nav>
+
+    <article class="panel panel-danger text-center">
+      <div class="panel-heading">
+        <div class="page-header">
+          <h1 class="text-center">没钱赚商店<small>发票</small></h1>
+        </div>
+      </div>
+      <table id="tableView" class="table  text-center">
+        <tr class="row">
+          <td class="tableHeadTitle">名称</td>
+          <td class="tableHeadTitle">单价(元)</td>
+          <td class="tableHeadTitle">单位</td>
+          <td class="tableHeadTitle">数量</td>
+          <td class="tableHeadTitle">小计(元)</td>
+        </tr>
+      </table>
+    </article>
+
+    <div class="starline">
+      ************************************************************************************************************************************************
+    </div>
+
+    <div class="text-center row">
+      <div class="col-xs-8"></div>
+      <p class="col-xs-2">总计：</p>
+      <div id="totalPrice" class="col-xs-1">￥0.00</div>
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10"></div>
+      <input type="button" id="backHomeBtn" class="btn btn-lg btn-danger col-xs-1 btn-xs" value="返回">
+      <div class="col-xs-1"></div>
+    </div>
+
+
+  </body>
+</html>

@@ -1,27 +1,19 @@
 $(document).ready(function() {
-  loadHomePage();
+  setupUI();
 });
 
-function loadHomePage() {
+function setupUI() {
+  setupHtml();
+  setBtnAction();
+}
+
+function setupHtml() {
   var allItems = getAllItems();
   var cartRecords = getCartRecords();
-  displayItemsList(allItems, cartRecords);
-  setCartBtnAction();
-  setReceiptBtnAction();
-}
-function setCartBtnAction() {
-  $('#cartBtn').click(function() {
-    window.location.href = 'html/cart.html';
-  });
+  setItemsList(allItems, cartRecords);
 }
 
-function setReceiptBtnAction() {
-  $('#receiptBtn').click(function() {
-    window.location.href = 'html/receipt-list.html';
-  });
-}
-
-function displayItemsList(allItems, cartRecords) {
+function setItemsList(allItems, cartRecords) {
   $('#cartCount').html(getTotalItemNumber());
 
   allItems.forEach(function(item) {
@@ -39,11 +31,27 @@ function displayItemsList(allItems, cartRecords) {
 
     $("#tableView").append(tr);
   });
-
-  bindMethod();
 }
 
-function bindMethod() {
+function setBtnAction() {
+  setCartBtnAction();
+  setReceiptBtnAction();
+  setTextFieldChanged();
+}
+
+function setCartBtnAction() {
+  $('#cartBtn').click(function() {
+    window.location.href = 'html/cart.html';
+  });
+}
+
+function setReceiptBtnAction() {
+  $('#receiptBtn').click(function() {
+    window.location.href = 'html/receipt-list.html';
+  });
+}
+
+function setTextFieldChanged() {
   $('input[name="itemCount"]').change(function() {
     var count = $(this).val();
     if (count === '') {

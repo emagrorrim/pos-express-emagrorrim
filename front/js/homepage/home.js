@@ -8,13 +8,13 @@ function setupUI() {
 }
 
 function setupHtml() {
-  var allItems = getAllItems();
-  var cartRecords = getCartRecords();
+  var allItems = Storage.getAllItems();
+  var cartRecords = Storage.getCartRecords();
   setItemsList(allItems, cartRecords);
 }
 
 function setItemsList(allItems, cartRecords) {
-  $('#cartCount').html(getTotalItemNumber());
+  $('#cartCount').html(Storage.getTotalItemNumber());
 
   allItems.forEach(function(item) {
     var count = getPurchasedCount(item.barcode, cartRecords);
@@ -59,7 +59,7 @@ function setTextFieldChanged() {
       $(this).val('0');
     }
     var barcode = this.dataset.barcode;
-    setCartRecord({ barcode: barcode, count: parseFloat(count) });
-    $('#cartCount').html(getTotalItemNumber());
+    Storage.setCartRecord({ barcode: barcode, count: parseFloat(count) });
+    $('#cartCount').html(Storage.getTotalItemNumber());
   });
 }

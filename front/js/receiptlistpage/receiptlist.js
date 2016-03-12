@@ -9,7 +9,7 @@ function setupUI() {
 
 function setupHtml() {
   setCartCount();    
-  var receiptlist = getReceiptList();
+  var receiptlist = Storage.getReceiptList();
   setReceiptList(receiptlist);
 }
 
@@ -32,12 +32,12 @@ function setReceiptList(receiptlist) {
 }
 
 function setCartCount() {
-  var cartRecords = getCartRecords();
-  $('#cartCount').html(getTotalItemNumber());
+  var cartRecords = Storage.getCartRecords();
+  $('#cartCount').html(Storage.getTotalItemNumber());
 }
 
 function findCurrentReceipt(date) {
-  var receiptlist = getReceiptList();
+  var receiptlist = Storage.getReceiptList();
   for (var i = 0; i < receiptlist.length; i++) {
     if (receiptlist[i].date === date) {
       return receiptlist[i];
@@ -67,7 +67,7 @@ function bindTapAction() {
   $('button[name="detailBtn"]').click(function() {
     var date = this.dataset.date;
     var receipt = findCurrentReceipt(date);
-    setCurrentReceipt(receipt);
+    Storage.setCurrentReceipt(receipt);
     window.location.href='receipt.html';
   });
 }

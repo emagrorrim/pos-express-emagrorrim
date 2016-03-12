@@ -9,13 +9,13 @@ function setupUI() {
 
 function setupHtml() {
   setCartCount();
-  var receipt = getCurrentReceipt();
+  var receipt = Storage.getCurrentReceipt();
   setReceipt(receipt);
   setBtnAction();
 }
 
 function setCartCount() {
-  $('#cartCount').html(getTotalItemNumber());
+  $('#cartCount').html(Storage.getTotalItemNumber());
 }
 
 function setReceipt(receipt) {

@@ -1,8 +1,4 @@
-function Storage() {
-    
-}
-
-Storage.getAllItems = function() {
+function getAllItems() {
   return [
     { barcode: 'ITEM000000', name: '可口可乐', unit: '瓶', price: 3.00 },
     { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3.00 },
@@ -13,7 +9,7 @@ Storage.getAllItems = function() {
   ];
 }
 
-Storage.getTotalItemNumber = function() {
+function getTotalItemNumber() {
   var cartRecords = getCartRecords();
   var total = 0;
   cartRecords.forEach(function(cartRecord) {
@@ -22,12 +18,12 @@ Storage.getTotalItemNumber = function() {
   return total;
 }
 
-Storage.getCartRecords = function() {
+function getCartRecords() {
   var cartRecords = JSON.parse(localStorage.getItem("cartRecords"));
   return cartRecords || [];
 }
 
-Storage.setCartRecord = function(cartRecord) {
+function setCartRecord(cartRecord) {
 
   if (cartRecord) {
     var cartRecords = updateCartRecords(cartRecord);
@@ -36,7 +32,7 @@ Storage.setCartRecord = function(cartRecord) {
   }
 }
 
-Storage.updateCartRecords = function(cartRecord) {
+function updateCartRecords(cartRecord) {
   var cartRecords = getCartRecords();
   var record = findCartRecord(cartRecord.barcode, cartRecords)
 
@@ -52,7 +48,7 @@ Storage.updateCartRecords = function(cartRecord) {
 }
 
 
-Storage.findCartRecord = function(barcode, cartRecords) {
+function findCartRecord(barcode, cartRecords) {
 
   for (var i = 0; i < cartRecords.length; i++) {
 
@@ -62,11 +58,11 @@ Storage.findCartRecord = function(barcode, cartRecords) {
   }
 }
 
-Storage.clearCart = function() {
+function clearCart() {
   localStorage.setItem("cartRecords","[]");
 }
 
-Storage.deleteCartRecord = function(cartRecord, cartRecords) {
+function deleteCartRecord(cartRecord, cartRecords) {
   for (var i = 0; i < cartRecords.length; i++) {
     if (cartRecords[i].barcode === cartRecord.barcode) {
       cartRecords.splice(i, 1);
@@ -76,24 +72,24 @@ Storage.deleteCartRecord = function(cartRecord, cartRecords) {
   }
 }
 
-Storage.setCurrentReceipt = function(receipt) {
+function setCurrentReceipt(receipt) {
   localStorage.setItem('currentReceipt', JSON.stringify(receipt));
 }
 
-Storage.getCurrentReceipt = function() {
+function getCurrentReceipt() {
   return JSON.parse(localStorage.getItem('currentReceipt'));
 }
 
-Storage.storeInList = function(receipt) {
+function storeInList(receipt) {
   var receipts = getReceiptList();
   receipts.push(receipt);
   setReceiptList(receipts)
 }
 
-Storage.setReceiptList = function(receipts) {
+function setReceiptList(receipts) {
   localStorage.setItem('receiptList', JSON.stringify(receipts));
 }
 
-Storage.getReceiptList = function() {
+function getReceiptList() {
   return JSON.parse(localStorage.getItem('receiptList')) || [];
 }

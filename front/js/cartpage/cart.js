@@ -15,7 +15,7 @@ function setupHtml() {
 }
 
 function setCartCount() {
-  $('#cartCount').html(getTotalItemNumber());
+  $('#cartCount').html(Storage.getTotalItemNumber());
 }
 
 function setItemsList(allItems, cartRecords) {
@@ -70,30 +70,30 @@ function setItemCountAction() {
       $(this).val('0');
     }
     var barcode = $(this).data('barcode');
-    setCartRecord({ barcode: barcode, count: parseFloat(count) });
+    Storage.setCartRecord({ barcode: barcode, count: parseFloat(count) });
     $('#cartCount').html(Storage.getTotalItemNumber());
   });
 }
 
 function setDeleteBtnAction() {
   $('input[name="deleteBtn"]').click(function() {
-    setCartRecord({ barcode: $(this).data('barcode'), count: 0 });
+    Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 });
 
     $(this).parents('tr').remove();
-    $('#cartCount').html(getTotalItemNumber());
+    $('#cartCount').html(Storage.getTotalItemNumber());
     $('#total').html("总计：￥"+0);
   });
 }
 
 function setCheckOutBtnAction() {
   $('#checkOutBtn').click(function() {
-    var cartRecords = getCartRecords("cartRecords");
+    var cartRecords = Storage.getCartRecords();
     if (cartRecords.length > 0) {
-      var allItems = getAllItems();
+      var allItems = Storage.getAllItems();
       var receipt = generateReceipt(cartRecords, allItems);
-      setCurrentReceipt(receipt);
-      storeInList(receipt);
-      clearCart();
+      Storage.setCurrentReceipt(receipt);
+      Storage.storeInList(receipt);
+      Storage.clearCart();
       window.location.href = 'receipt.html';
     } else {
         alert("购物车为空！")

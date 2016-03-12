@@ -1,9 +1,7 @@
-function Storage() {
-    
-}
+function Storage() {}
 
-Storage.getAllItems = function() {
-  return [
+Storage.getAllItems = function(callBack) {
+  var allItems = [
     { barcode: 'ITEM000000', name: '可口可乐', unit: '瓶', price: 3.00 },
     { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3.00 },
     { barcode: 'ITEM000002', name: '苹果', unit: '斤', price: 5.50 },
@@ -11,29 +9,28 @@ Storage.getAllItems = function() {
     { barcode: 'ITEM000004', name: '电池', unit: '个', price: 2.00 },
     { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.50 }
   ];
+  callBack(allItems);
 }
 
-Storage.getTotalItemNumber = function() {
+Storage.getCartCount = function(callBack) {
   var cartRecords = Storage.getCartRecords();
   var total = 0;
   cartRecords.forEach(function(cartRecord) {
     total += cartRecord.count;
   });
-  return total;
+  callBack(total);
+}
+
+Storage.setCartRecord = function(cartRecord, callBack) {
+
+  var cartRecords = Storage.updateCartRecords(cartRecord);
+  localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
+  callBack();
 }
 
 Storage.getCartRecords = function() {
   var cartRecords = JSON.parse(localStorage.getItem("cartRecords"));
   return cartRecords || [];
-}
-
-Storage.setCartRecord = function(cartRecord) {
-
-  if (cartRecord) {
-    var cartRecords = Storage.updateCartRecords(cartRecord);
-
-    localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
-  }
 }
 
 Storage.updateCartRecords = function(cartRecord) {

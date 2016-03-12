@@ -3,31 +3,33 @@ $(document).ready(function() {
 });
 
 function setupUI() {
-  setupHtml();
+  setupCartCount();
+  setupList();
   setBtnAction();
 }
 
-function setupHtml() {
-  var allItems = Storage.getAllItems();
-  var cartRecords = Storage.getCartRecords();
-  setItemsList(allItems, cartRecords);
+function setupCartCount() {
+  Storage.getCartCount(setCartCount);
 }
 
-function setItemsList(allItems, cartRecords) {
-  $('#cartCount').html(Storage.getTotalItemNumber());
+function setupList() {
+  Storage.getAllItems(setItemsList);
+}
 
+function setCartCount(count) {
+  $('#cartCount').html(count);
+}
+
+function setItemsList(allItems) {
   allItems.forEach(function(item) {
-    var count = getPurchasedCount(item.barcode, cartRecords);
-
-    var tr =
-      "<tr class='row'>" +
-      "<td class='col-xs-3'>" + item.name + "</td>" +
-      "<td class='col-xs-2'>￥" + item.price.toFixed(2) + "</td>" +
-      "<td class='col-xs-4'>" + item.unit + "</td>" +
-      "<td class='col-xs-1'><input type='text' class='form-control text-center' data-barcode='" + item.barcode +
-      "' name='itemCount' value='" + count + "'/></td>" +
-      "<td class='col-xs-2'></td>" +
-      "</tr>";
+    var tr ="<tr class='row'>" +
+              "<td class='col-xs-3'>" + item.name + "</td>" +
+              "<td class='col-xs-2'>￥" + item.price.toFixed(2) + "</td>" +
+              "<td class='col-xs-4'>" + item.unit + "</td>" +
+              "<td class='col-xs-1'><input type='button' class='btn btn-lg btn-danger btn-xs' data-barcode='" + item.barcode +
+              "' name='itemCount' value='+'/></td>" +
+              "<td class='col-xs-2'></td>" +
+            "</tr>";
 
     $("#tableView").append(tr);
   });
@@ -36,7 +38,7 @@ function setItemsList(allItems, cartRecords) {
 function setBtnAction() {
   setCartBtnAction();
   setReceiptBtnAction();
-  setTextFieldChanged();
+  setAddBtnAction();
 }
 
 function setCartBtnAction() {
@@ -51,15 +53,10 @@ function setReceiptBtnAction() {
   });
 }
 
-function setTextFieldChanged() {
-  $('input[name="itemCount"]').change(function() {
-    var count = $(this).val();
-    if (count === '') {
-      count = '0';
-      $(this).val('0');
-    }
-    var barcode = this.dataset.barcode;
-    Storage.setCartRecord({ barcode: barcode, count: parseFloat(count) });
-    $('#cartCount').html(Storage.getTotalItemNumber());
+function setAddBtnAction() {
+  $('input[name="itemCount"]').click(function() {
+    var barcode = $(this).data('barcode');
+    var cartRecord = { barcode: barcode, count: 1 };
+    Storage.setCartRecord(cartRecord, setupCartCount);
   });
 }

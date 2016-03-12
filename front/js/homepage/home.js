@@ -27,7 +27,7 @@ function setItemsList(allItems) {
               "<td class='col-xs-2'>￥" + item.price.toFixed(2) + "</td>" +
               "<td class='col-xs-4'>" + item.unit + "</td>" +
               "<td class='col-xs-1'><input type='button' class='btn btn-lg btn-danger btn-xs' data-barcode='" + item.barcode +
-              "' name='itemCount' value='+'/></td>" +
+              "' name='itemCount' value='+添加'/></td>" +
               "<td class='col-xs-2'></td>" +
             "</tr>";
 

@@ -3,6 +3,9 @@ var express = require('express');
 var app = express();
 app.use(cors());
 
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+
 app.get('/', function(req, res) {
   res.sendfile('./front/index.html');
 });

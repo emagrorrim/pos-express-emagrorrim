@@ -3,27 +3,31 @@ $(document).ready(function() {
 });
 
 function setupUI() {
-  setupHtml();
+  setupCartCount();
+  setupList();
   setBtnAction();
 }
 
-function setupHtml() {
-  setCartCount();    
-  var receiptlist = Storage.getReceiptList();
-  setReceiptList(receiptlist);
+function setupList() {  
+  Storage.getReceiptList(setReceiptList);
 }
 
+function setupCartCount() {
+  Storage.getCartCount(setCartCount);
+}
+
+function setCartCount(total) {
+  $('#cartCount').html(total);
+}
 
 function setReceiptList(receiptlist) {
  
   receiptlist.forEach(function(receipt) {
-    var date = receipt.date;
-
     var tr =
       "<tr class='row'>" +
-      "<td>" + date + "</td>" +
+      "<td>" + receipt.date + "</td>" +
       "<td>￥" +  receipt.total.toFixed(2) + "</td>" +
-      "<td><button type='text' class='btn btn-lg btn-danger btn-xs' data-date='" + date +
+      "<td><button type='text' class='btn btn-lg btn-danger btn-xs' data-date='" + receipt.date +
       "' name='detailBtn'><span class='glyphicon glyphicon-align-justify'></span></button></td>" +
       "</tr>";
 
@@ -31,24 +35,10 @@ function setReceiptList(receiptlist) {
   })
 }
 
-function setCartCount() {
-  var cartRecords = Storage.getCartRecords();
-  $('#cartCount').html(Storage.getTotalItemNumber());
-}
-
-function findCurrentReceipt(date) {
-  var receiptlist = Storage.getReceiptList();
-  for (var i = 0; i < receiptlist.length; i++) {
-    if (receiptlist[i].date === date) {
-      return receiptlist[i];
-    }
-  }
-}
-
 function setBtnAction() {
   setCartBtnAction();
   setLogoBtnAction();
-  bindTapAction();
+  setDetailBtnAction();
 }
 
 function setCartBtnAction() {
@@ -63,11 +53,21 @@ function setLogoBtnAction() {
   });
 }
 
-function bindTapAction() {
+function setDetailBtnAction() {
   $('button[name="detailBtn"]').click(function() {
     var date = this.dataset.date;
-    var receipt = findCurrentReceipt(date);
-    Storage.setCurrentReceipt(receipt);
-    window.location.href='receipt.html';
+    saveCurrentReceipt(date);
   });
+}
+
+function saveCurrentReceipt(date) {
+  Storage.getReceiptList(function(receiptlist) {
+    for (var i = 0; i < receiptlist.length; i++) {
+      if (receiptlist[i].date === date) {
+        Storage.setCurrentReceipt(receiptlist[i]);
+        window.location.href='receipt.html';
+      }
+    }
+  });
+  
 }

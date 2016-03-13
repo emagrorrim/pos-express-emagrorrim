@@ -12,12 +12,12 @@ function setupCartCount() {
   Storage.getCartCount(setCartCount);
 }
 
-function setupList() {
-  Storage.getAllItems(setItemsList);
-}
-
 function setCartCount(count) {
   $('#cartCount').html(count);
+}
+
+function setupList() {
+  Storage.getAllItems(setItemsList);
 }
 
 function setItemsList(allItems) {

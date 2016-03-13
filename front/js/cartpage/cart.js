@@ -3,24 +3,27 @@ $(document).ready(function() {
 });
 
 function setupUI() {
-  setupHtml();
+  setupCartCount();
+  setupList();
   setBtnAction();
 }
 
-function setupHtml() {
-  setCartCount();
-  var allItems = Storage.getAllItems();
-  var cartRecords = Storage.getCartRecords();
-  setItemsList(allItems, cartRecords);
+function setupList() {
+  Storage.getCartRecords(setItemsList);
 }
 
-function setCartCount() {
-  $('#cartCount').html(Storage.getTotalItemNumber());
+function setupCartCount() {
+  Storage.getCartCount(setCartCount);
 }
 
-function setItemsList(allItems, cartRecords) {
+function setCartCount(total) {
+  $('#cartCount').html(total);
+}
+
+function setItemsList(cartRecords) {
   
   var total = 0;
+  var allItems = Storage.getLocalAllItems();
   cartRecords.forEach(function(cartRecord) {
       
     var item = getItem(cartRecord.barcode, allItems);
@@ -69,34 +72,36 @@ function setItemCountAction() {
       count = '0';
       $(this).val('0');
     }
+    
     var barcode = $(this).data('barcode');
-    Storage.setCartRecord({ barcode: barcode, count: parseFloat(count) });
-    $('#cartCount').html(Storage.getTotalItemNumber());
+    var cartRecord = { barcode: barcode, count: parseFloat(count) };
+    Storage.setCartRecord(cartRecord, setupCartCount);
+    setupCartCount();
   });
 }
 
 function setDeleteBtnAction() {
   $('input[name="deleteBtn"]').click(function() {
-    Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 });
+    Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 }, setupCartCount);
 
     $(this).parents('tr').remove();
-    $('#cartCount').html(Storage.getTotalItemNumber());
     $('#total').html("总计：￥"+0);
   });
 }
 
 function setCheckOutBtnAction() {
   $('#checkOutBtn').click(function() {
-    var cartRecords = Storage.getCartRecords();
-    if (cartRecords.length > 0) {
-      var allItems = Storage.getAllItems();
-      var receipt = generateReceipt(cartRecords, allItems);
-      Storage.setCurrentReceipt(receipt);
-      Storage.storeInList(receipt);
-      Storage.clearCart();
-      window.location.href = 'receipt.html';
-    } else {
+    Storage.getCartRecords(function(cartRecords) {
+      if (cartRecords.length > 0) {
+        var allItems = Storage.getLocalAllItems();
+        var receipt = generateReceipt(cartRecords, allItems);
+        Storage.setCurrentReceipt(receipt);
+        Storage.storeInList(receipt);
+        Storage.clearCart();
+        window.location.href = 'receipt.html';
+      } else {
         alert("购物车为空！")
-    }  
+      }
+    }); 
   });
 }

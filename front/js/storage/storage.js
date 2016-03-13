@@ -9,45 +9,52 @@ Storage.getAllItems = function(callBack) {
     { barcode: 'ITEM000004', name: '电池', unit: '个', price: 2.00 },
     { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.50 }
   ];
+  Storage.setLocalAllItems(allItems);
   callBack(allItems);
 }
 
+Storage.setLocalAllItems = function(allItems) {
+  localStorage.setItem('allItems', JSON.stringify(allItems));
+}
+
+Storage.getLocalAllItems = function() {
+  return JSON.parse(localStorage.getItem('allItems'));
+}
+
 Storage.getCartCount = function(callBack) {
-  var cartRecords = Storage.getCartRecords();
-  var total = 0;
-  cartRecords.forEach(function(cartRecord) {
-    total += cartRecord.count;
+  Storage.getCartRecords(function(cartRecords) {
+    var total = 0;
+    cartRecords.forEach(function(cartRecord) {
+      total += cartRecord.count;
+    });
+    callBack(total);
   });
-  callBack(total);
 }
 
 Storage.setCartRecord = function(cartRecord, callBack) {
 
-  var cartRecords = Storage.updateCartRecords(cartRecord);
-  localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
+  Storage.updateCartRecords(cartRecord);
+  
   callBack();
 }
 
-Storage.getCartRecords = function() {
-  var cartRecords = JSON.parse(localStorage.getItem("cartRecords"));
-  return cartRecords || [];
-}
-
 Storage.updateCartRecords = function(cartRecord) {
-  var cartRecords = Storage.getCartRecords();
-  var record = Storage.findCartRecord(cartRecord.barcode, cartRecords)
+  
+  Storage.getCartRecords(function(cartRecords) {
+    var record = Storage.findCartRecord(cartRecord.barcode, cartRecords)
 
-  if (record) {
-    record.count = cartRecord.count;
-    if (cartRecord.count == 0) {
-      Storage.deleteCartRecord(record, cartRecords);
+    if (record) {
+      record.count = cartRecord.count;
+      if (cartRecord.count === 0) {
+        Storage.deleteCartRecord(record, cartRecords);
+      }
+    } else if(cartRecord.count !== 0) {
+      cartRecords.push(cartRecord);
     }
-  } else if(cartRecord.count != 0) {
-    cartRecords.push(cartRecord);
-  }
-  return cartRecords;
+    localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
+  });
+  
 }
-
 
 Storage.findCartRecord = function(barcode, cartRecords) {
 
@@ -57,6 +64,11 @@ Storage.findCartRecord = function(barcode, cartRecords) {
       return cartRecords[i];
     }
   }
+}
+
+Storage.getCartRecords = function(callBack) {
+  var cartRecords = JSON.parse(localStorage.getItem("cartRecords")) || [];
+  callBack(cartRecords);
 }
 
 Storage.clearCart = function() {
@@ -81,16 +93,18 @@ Storage.getCurrentReceipt = function() {
   return JSON.parse(localStorage.getItem('currentReceipt'));
 }
 
-Storage.storeInList = function(receipt) {
-  var receipts = Storage.getReceiptList();
-  receipts.push(receipt);
-  Storage.setReceiptList(receipts)
+Storage.storeInList = function(receipt, callBack) {
+  Storage.getReceiptList(function(receipts) {
+    receipts.push(receipt);
+    Storage.setReceiptList(receipts)
+  });
 }
 
 Storage.setReceiptList = function(receipts) {
   localStorage.setItem('receiptList', JSON.stringify(receipts));
 }
 
-Storage.getReceiptList = function() {
-  return JSON.parse(localStorage.getItem('receiptList')) || [];
+Storage.getReceiptList = function(callBack) {
+  var receiptList = JSON.parse(localStorage.getItem('receiptList')) || [];
+  callBack(receiptList);
 }

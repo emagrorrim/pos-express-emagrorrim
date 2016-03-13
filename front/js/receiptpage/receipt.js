@@ -3,28 +3,27 @@ $(document).ready(function() {
 });
 
 function setupUI() {
-  setupHtml();
+  setupCartCount();
+  setupList();
   setBtnAction();
 }
 
-function setupHtml() {
-  setCartCount();
-  var receipt = Storage.getCurrentReceipt();
-  setReceipt(receipt);
-  setBtnAction();
+function setupList() {
+  setReceipt(Storage.getCurrentReceipt());
 }
 
-function setCartCount() {
-  $('#cartCount').html(Storage.getTotalItemNumber());
+function setupCartCount() {
+  Storage.getCartCount(setCartCount);
+}
+
+function setCartCount(total) {
+  $('#cartCount').html(total);
 }
 
 function setReceipt(receipt) {
-
-  var total = receipt.total;
-  setTotalPrice(total);
+  setTotalPrice(receipt.total);
 
   var receiptItems = receipt.receiptItems;
-
   receiptItems.forEach(function(receiptItem) {
     var tr =
       "<tr class='row'>" +

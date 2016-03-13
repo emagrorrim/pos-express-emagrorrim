@@ -28,18 +28,19 @@ function setReceipt(receipt) {
     var tr =
       "<tr class='row'>" +
       "<td>" + receiptItem.cartItem.item.name + "</td>" +
-      "<td>￥" + receiptItem.cartItem.item.price.toFixed(2) + "</td>" +
+      "<td>￥" + parseFloat(receiptItem.cartItem.item.price).toFixed(2) + "</td>" +
       "<td>" + receiptItem.cartItem.item.unit + "</td>" +
       "<td>" + receiptItem.cartItem.count + "</td>" +
-      "<td>" + receiptItem.total.toFixed(2) + "</td>" +
+      "<td>" + parseFloat(receiptItem.total).toFixed(2) + "</td>" +
       "</tr>";
 
     $("#tableView").append(tr);
   });
+  setBackBtnAction();
 }
 
 function setTotalPrice(total) {
-  var totalPrice = '￥' + total.toFixed(2);
+  var totalPrice = '￥' + parseFloat(total).toFixed(2);
   $('#totalPrice').html(totalPrice);
 }
 
@@ -47,7 +48,6 @@ function setBtnAction() {
   setCartBtnAction();
   setLogoBtnAction();
   setReceiptBtnAction();
-  setBackBtnAction();
 }
 
 function setCartBtnAction() {

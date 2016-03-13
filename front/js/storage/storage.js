@@ -2,25 +2,14 @@ var url = 'http://localhost:8080'
 function Storage() {}
 
 Storage.getAllItems = function(callBack) {
-  var allItems;
   $.ajax({
     method: "GET",
     url: url + '/allItems',
   })
-  .done(function( data ) {
-    allItems = JSON.parse(data);
+  .done(function(allItems) {
     Storage.setLocalAllItems(allItems);
     callBack(allItems);
   });
-  // var allItems = [
-  //   { barcode: 'ITEM000000', name: '可口可乐', unit: '瓶', price: 3.00 },
-  //   { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3.00 },
-  //   { barcode: 'ITEM000002', name: '苹果', unit: '斤', price: 5.50 },
-  //   { barcode: 'ITEM000003', name: '荔枝', unit: '斤', price: 15.00 },
-  //   { barcode: 'ITEM000004', name: '电池', unit: '个', price: 2.00 },
-  //   { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.50 }
-  // ];
-  
 }
 
 Storage.setLocalAllItems = function(allItems) {
@@ -35,19 +24,13 @@ Storage.getCartCount = function(callBack) {
   Storage.getCartRecords(function(cartRecords) {
     var total = 0;
     cartRecords.forEach(function(cartRecord) {
-      total += cartRecord.count;
+      total += parseFloat(cartRecord.count);
     });
     callBack(total);
   });
 }
 
 Storage.setCartRecord = function(cartRecord, callBack) {
-  Storage.updateCartRecords(cartRecord);
-  callBack();
-}
-
-Storage.updateCartRecords = function(cartRecord) {
-  
   Storage.getCartRecords(function(cartRecords) {
     var record = Storage.findCartRecord(cartRecord.barcode, cartRecords)
 
@@ -56,12 +39,18 @@ Storage.updateCartRecords = function(cartRecord) {
       if (cartRecord.count === 0) {
         Storage.deleteCartRecord(record, cartRecords);
       }
-    } else if(cartRecord.count !== 0) {
+    } else if (cartRecord.count !== 0) {
       cartRecords.push(cartRecord);
     }
-    localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
+    $.ajax({
+      method: "POST",
+      url: url + '/cartRecords',
+      data: {cartRecords:cartRecords}
+    })
+    .done(function(data) {
+      callBack();
+    });
   });
-  
 }
 
 Storage.findCartRecord = function(barcode, cartRecords) {
@@ -75,19 +64,29 @@ Storage.findCartRecord = function(barcode, cartRecords) {
 }
 
 Storage.getCartRecords = function(callBack) {
-  var cartRecords = JSON.parse(localStorage.getItem("cartRecords")) || [];
-  callBack(cartRecords);
+  $.ajax({
+    method: "GET",
+    url: url + '/cartRecords',
+  })
+  .done(function(cartRecords) {
+    callBack(cartRecords);
+  });
 }
 
-Storage.clearCart = function() {
-  localStorage.setItem("cartRecords","[]");
+Storage.clearCart = function(callBack) {
+  $.ajax({
+    method: "GET",
+    url: url + '/clear',
+  })
+  .done(function(data) {
+    callBack();
+  });
 }
 
 Storage.deleteCartRecord = function(cartRecord, cartRecords) {
   for (var i = 0; i < cartRecords.length; i++) {
     if (cartRecords[i].barcode === cartRecord.barcode) {
       cartRecords.splice(i, 1);
-      localStorage.setItem("cartRecords", JSON.stringify(cartRecords));
       return;
     }
   }
@@ -104,15 +103,27 @@ Storage.getCurrentReceipt = function() {
 Storage.storeInList = function(receipt, callBack) {
   Storage.getReceiptList(function(receipts) {
     receipts.push(receipt);
-    Storage.setReceiptList(receipts)
+    Storage.setReceiptList(receipts, callBack)
   });
 }
 
-Storage.setReceiptList = function(receipts) {
-  localStorage.setItem('receiptList', JSON.stringify(receipts));
+Storage.setReceiptList = function(receipts, callBack) {
+  $.ajax({
+      method: "POST",
+      url: url + '/receiptList',
+      data: {receipts:receipts}
+    })
+    .done(function(data) {
+      callBack();
+    });
 }
 
 Storage.getReceiptList = function(callBack) {
-  var receiptList = JSON.parse(localStorage.getItem('receiptList')) || [];
-  callBack(receiptList);
+  $.ajax({
+    method: "GET",
+    url: url + '/receiptList'
+  })
+  .done(function(receiptList) {
+    callBack(receiptList);
+  })
 }

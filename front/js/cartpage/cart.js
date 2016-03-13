@@ -6,7 +6,6 @@ function setupUI() {
   setupCartCount();
   setupTotalPrice();
   setupList();
-  setBtnAction();
 }
 
 function setupList() {
@@ -39,6 +38,7 @@ function setItemsList(cartRecords) {
 
     $("#tableView").append(tr);
   });
+  setBtnAction();
 }
 
 function setupTotalPrice() {
@@ -83,15 +83,19 @@ function setItemCountAction() {
     
     var barcode = $(this).data('barcode');
     var cartRecord = { barcode: barcode, count: parseFloat(count) };
-    Storage.setCartRecord(cartRecord, setupCartCount);
-    setupTotalPrice();
+    Storage.setCartRecord(cartRecord, function() {
+      setupCartCount();
+      setupTotalPrice();
+    });
   });
 }
 
 function setDeleteBtnAction() {
   $('input[name="deleteBtn"]').click(function() {
-    Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 }, setupCartCount);
-    setupTotalPrice();
+    Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 }, function() {
+      setupCartCount();
+      setupTotalPrice();
+    });
     $(this).parents('tr').remove();
   });
 }
@@ -103,9 +107,11 @@ function setCheckOutBtnAction() {
         var allItems = Storage.getLocalAllItems();
         var receipt = generateReceipt(cartRecords, allItems);
         Storage.setCurrentReceipt(receipt);
-        Storage.storeInList(receipt);
-        Storage.clearCart();
-        window.location.href = 'receipt.html';
+        Storage.storeInList(receipt, function() {
+          Storage.clearCart(function() {
+            window.location.href = 'receipt.html';
+          });
+        });
       } else {
         alert("购物车为空！")
       }

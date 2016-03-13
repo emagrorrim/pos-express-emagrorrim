@@ -1,26 +1,55 @@
-var cors = require('cors')
+var cors = require('cors');
 var express = require('express');
-var app = express();
-app.use(cors());
+var bodyParser = require('body-parser')
+var database = require('./database');
 
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
+var app = express();
+
+app.use(cors());
+app.use(bodyParser.json());       
+app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.get('/', function(req, res) {
-  res.sendfile('./front/index.html');
+  res.sendFile('./front/index.html');
 });
 
 app.get('/allItems', function (req, res) {
-  var allItems = [
-    { barcode: 'ITEM000000', name: '可口可乐', unit: '瓶', price: 3.00 },
-    { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3.00 },
-    { barcode: 'ITEM000002', name: '苹果', unit: '斤', price: 5.50 },
-    { barcode: 'ITEM000003', name: '荔枝', unit: '斤', price: 15.00 },
-    { barcode: 'ITEM000004', name: '电池', unit: '个', price: 2.00 },
-    { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.50 }
-  ];
-  res.send(JSON.stringify(allItems));
-  console.log(req + res);
+  database.connect(database.queryAllItems, function(doc) {  
+    res.send(doc.allItems || []);
+  });
+});
+
+app.get('/cartRecords', function (req, res) {
+  database.connect(database.queryCartRecords, function(doc) {
+    res.send(doc.cartRecords || []);
+  });
+});
+
+app.get('/clear', function (req, res) {
+  database.connect(database.clearCart, function() {
+    res.send('succeed');
+  })
+});
+
+app.post('/cartRecords', function (req, res) {
+  var cartRecords = req.body.cartRecords;
+  database.updateCartRecords(cartRecords, function() {
+    res.send('succeed');
+  });
+});
+
+app.get('/receiptList', function (req, res) {
+  database.connect(database.queryReceiptList, function(doc) {
+    res.send(doc.receipts || []);
+  });
+});
+
+app.post('/receiptList', function (req, res) {
+  var receipts = req.body.receipts;
+  database.updateReceiptList(receipts, function() {
+    res.send('succeed');
+  });
 });
 
 app.listen(8080, function () {

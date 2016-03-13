@@ -5,7 +5,6 @@ $(document).ready(function() {
 function setupUI() {
   setupCartCount();
   setupList();
-  setBtnAction();
 }
 
 function setupCartCount() {
@@ -33,6 +32,7 @@ function setItemsList(allItems) {
 
     $("#tableView").append(tr);
   });
+  setBtnAction();
 }
 
 function setBtnAction() {

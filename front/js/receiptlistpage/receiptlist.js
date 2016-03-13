@@ -5,7 +5,6 @@ $(document).ready(function() {
 function setupUI() {
   setupCartCount();
   setupList();
-  setBtnAction();
 }
 
 function setupList() {  
@@ -26,13 +25,14 @@ function setReceiptList(receiptlist) {
     var tr =
       "<tr class='row'>" +
       "<td>" + receipt.date + "</td>" +
-      "<td>￥" +  receipt.total.toFixed(2) + "</td>" +
+      "<td>￥" +  parseFloat(receipt.total).toFixed(2) + "</td>" +
       "<td><button type='text' class='btn btn-lg btn-danger btn-xs' data-date='" + receipt.date +
       "' name='detailBtn'><span class='glyphicon glyphicon-align-justify'></span></button></td>" +
       "</tr>";
 
     $("#tableView").append(tr);
   })
+  setBtnAction();
 }
 
 function setBtnAction() {

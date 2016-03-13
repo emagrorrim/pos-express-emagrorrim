@@ -32,9 +32,7 @@ Storage.getCartCount = function(callBack) {
 }
 
 Storage.setCartRecord = function(cartRecord, callBack) {
-
   Storage.updateCartRecords(cartRecord);
-  
   callBack();
 }
 

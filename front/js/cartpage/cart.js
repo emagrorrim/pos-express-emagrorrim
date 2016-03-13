@@ -4,6 +4,7 @@ $(document).ready(function() {
 
 function setupUI() {
   setupCartCount();
+  setupTotalPrice();
   setupList();
   setBtnAction();
 }
@@ -21,15 +22,10 @@ function setCartCount(total) {
 }
 
 function setItemsList(cartRecords) {
-  
-  var total = 0;
   var allItems = Storage.getLocalAllItems();
   cartRecords.forEach(function(cartRecord) {
       
     var item = getItem(cartRecord.barcode, allItems);
-    total += item.price * cartRecord.count;
-    $('#total').html("总计：￥"+total);
-    
     var tr =
       "<tr class='row'>" +
       "<td>" + item.name + "</td>" +
@@ -42,6 +38,18 @@ function setItemsList(cartRecords) {
       "</tr>";
 
     $("#tableView").append(tr);
+  });
+}
+
+function setupTotalPrice() {
+  Storage.getCartRecords(function(cartRecords) {
+    var allItems = Storage.getLocalAllItems();
+    var total = 0;
+    cartRecords.forEach(function(cartRecord) {
+      var item = getItem(cartRecord.barcode, allItems);
+      total += item.price * cartRecord.count;
+    })
+    $('#total').html('总结：￥' + total);
   });
 }
 
@@ -76,16 +84,15 @@ function setItemCountAction() {
     var barcode = $(this).data('barcode');
     var cartRecord = { barcode: barcode, count: parseFloat(count) };
     Storage.setCartRecord(cartRecord, setupCartCount);
-    setupCartCount();
+    setupTotalPrice();
   });
 }
 
 function setDeleteBtnAction() {
   $('input[name="deleteBtn"]').click(function() {
     Storage.setCartRecord({ barcode: $(this).data('barcode'), count: 0 }, setupCartCount);
-
+    setupTotalPrice();
     $(this).parents('tr').remove();
-    $('#total').html("总计：￥"+0);
   });
 }
 

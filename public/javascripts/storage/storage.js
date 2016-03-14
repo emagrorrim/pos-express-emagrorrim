@@ -62,11 +62,7 @@ Storage.findCartRecord = function(barcode, cartRecords) {
 }
 
 Storage.getCartRecords = function(callBack) {
-  $.ajax({
-    method: "GET",
-    url: url + '/api/cartRecords',
-  })
-  .done(function(cartRecords) {
+  $.get('/api/cartRecords', function(cartRecords) {
     callBack(cartRecords);
   });
 }
@@ -106,22 +102,13 @@ Storage.storeInList = function(receipt, callBack) {
 }
 
 Storage.setReceiptList = function(receipts, callBack) {
-  $.ajax({
-      method: "POST",
-      url: url + '/api/receiptList',
-      data: {receipts:receipts}
-    })
-    .done(function(data) {
+  $.post('/api/receiptList', {receipts:receipts}, function(data) {
       callBack();
     });
 }
 
 Storage.getReceiptList = function(callBack) {
-  $.ajax({
-    method: "GET",
-    url: url + '/api/receiptList'
-  })
-  .done(function(receiptList) {
+  $.get('/api/receiptList', function(receiptList) {
     callBack(receiptList);
-  })
+  });
 }

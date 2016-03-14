@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>No Money No Happy</title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="lib/jquery/jquery.js" charset="utf-8"></script>
+    <script src="javascripts/storage/storage.js" charset="utf-8"></script>
+    
+    <script src="javascripts/homepage/home.js" charset="utf-8"></script>
+
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <button type="button" id="logoBtn" class="btn btn-default navbar-btn">
+            没钱赚商店
+          </button>
+          <button type="button" id="receiptBtn" class="btn btn-default navbar-btn pull-right">
+            购物记录
+          </button>
+          <button type="button" id="cartBtn"  class="btn btn-default navbar-btn pull-right">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            <span id="cartCount" class="badge"></span>
+          </button>
+      </div>
+    </nav>
+
+    <article class="panel panel-danger text-center">
+      <div class="panel-heading">
+        <div class="page-header">
+          <h1 class="text-center">没钱赚商店<small>商品列表</small></h1>
+        </div>
+      </div>
+      <table id="tableView" class="table">
+        <tr class="row">
+          <td class="tableHeadTitle">名称</td>
+          <td class="tableHeadTitle">单价(元)</td>
+          <td class="tableHeadTitle">单位</td>
+          <td class="tableHeadTitle">操作</td>
+        </tr>
+      </table>
+    </article>
+  </body>
+</html>

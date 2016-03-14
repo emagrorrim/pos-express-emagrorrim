@@ -1,17 +1,32 @@
-var cors = require('cors');
-var express = require('express');
-var bodyParser = require('body-parser')
-var database = require('./database');
+'use strict'
+let cors = require('cors');
+let express = require('express');
+let bodyParser = require('body-parser');
+let path = require('path');
+let database = require('./database');
 
-var app = express();
+let app = express();
 
 app.use(cors());
 app.use(bodyParser.json());       
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', function(req, res) {
-  res.sendFile('./front/index.html');
+  res.sendfile('./public/index.html');
+});
+
+app.get('/html/cart', function(req, res) {
+  res.sendfile('./public/html/cart.html');
+});
+
+app.get('/html/receipt', function(req, res) {
+  res.sendfile('./public/html/receipt.html');
+});
+
+app.get('/html/receipt-list', function(req, res) {
+  res.sendfile('./public/html/receipt-list.html');
 });
 
 app.get('/allItems', function (req, res) {
@@ -33,7 +48,7 @@ app.get('/clear', function (req, res) {
 });
 
 app.post('/cartRecords', function (req, res) {
-  var cartRecords = req.body.cartRecords;
+  let cartRecords = req.body.cartRecords;
   database.updateCartRecords(cartRecords, function() {
     res.send('succeed');
   });
@@ -46,7 +61,7 @@ app.get('/receiptList', function (req, res) {
 });
 
 app.post('/receiptList', function (req, res) {
-  var receipts = req.body.receipts;
+  let receipts = req.body.receipts;
   database.updateReceiptList(receipts, function() {
     res.send('succeed');
   });

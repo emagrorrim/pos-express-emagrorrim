@@ -1,7 +1,8 @@
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
+'use strict'
+let MongoClient = require('mongodb').MongoClient;
+let assert = require('assert');
 
-var url = 'mongodb://localhost:27017/no-money-shop';
+let url = 'mongodb://localhost:27017/no-money-shop';
 
 function connect(databaseFunc, callback) {
   MongoClient.connect(url, function(err, db) {

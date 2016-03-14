@@ -4,10 +4,10 @@ let assert = require('assert');
 
 let url = 'mongodb://localhost:27017/no-money-shop';
 
-function connect(databaseFunc, callback) {
+function connect(executeFunc, callback) {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
-    databaseFunc(db, (doc) => {
+    executeFunc(db, (doc) => {
       callback(doc);
       db.close();
     });

@@ -69,7 +69,7 @@ function setLogoBtnAction() {
 
 function setReceiptBtnAction() {
   $('#receiptBtn').click(function() {
-    window.location.href = 'receipt-list';
+    window.location.href = '../receipt-list';
   });
 }
 
@@ -109,7 +109,7 @@ function setCheckOutBtnAction() {
         Storage.setCurrentReceipt(receipt);
         Storage.storeInList(receipt, function() {
           Storage.clearCart(function() {
-            window.location.href = 'receipt';
+            window.location.href = '../receipt';
           });
         });
       } else {

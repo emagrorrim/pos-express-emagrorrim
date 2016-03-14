@@ -20,7 +20,7 @@ function setCartCount(total) {
 }
 
 function setReceiptList(receiptlist) {
- 
+  receiptlist.reverse();
   receiptlist.forEach(function(receipt) {
     var tr =
       "<tr class='row'>" +
@@ -43,7 +43,7 @@ function setBtnAction() {
 
 function setCartBtnAction() {
   $('#cartBtn').click(function() {
-    window.location.href = 'cart';
+    window.location.href = '../cart';
   });
 }
 
@@ -65,7 +65,7 @@ function saveCurrentReceipt(date) {
     for (var i = 0; i < receiptlist.length; i++) {
       if (receiptlist[i].date === date) {
         Storage.setCurrentReceipt(receiptlist[i]);
-        window.location.href='receipt';
+        window.location.href='../receipt';
       }
     }
   });

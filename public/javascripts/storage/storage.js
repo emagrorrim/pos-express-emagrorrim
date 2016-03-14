@@ -4,7 +4,7 @@ function Storage() {}
 Storage.getAllItems = function(callBack) {
   $.ajax({
     method: "GET",
-    url: url + '/allItems',
+    url: url + '/api/allItems',
   })
   .done(function(allItems) {
     Storage.setLocalAllItems(allItems);
@@ -44,7 +44,7 @@ Storage.setCartRecord = function(cartRecord, callBack) {
     }
     $.ajax({
       method: "POST",
-      url: url + '/cartRecords',
+      url: url + '/api/cartRecords',
       data: {cartRecords:cartRecords}
     })
     .done(function(data) {
@@ -66,7 +66,7 @@ Storage.findCartRecord = function(barcode, cartRecords) {
 Storage.getCartRecords = function(callBack) {
   $.ajax({
     method: "GET",
-    url: url + '/cartRecords',
+    url: url + '/api/cartRecords',
   })
   .done(function(cartRecords) {
     callBack(cartRecords);
@@ -76,7 +76,7 @@ Storage.getCartRecords = function(callBack) {
 Storage.clearCart = function(callBack) {
   $.ajax({
     method: "GET",
-    url: url + '/clear',
+    url: url + '/api/clear',
   })
   .done(function(data) {
     callBack();
@@ -110,7 +110,7 @@ Storage.storeInList = function(receipt, callBack) {
 Storage.setReceiptList = function(receipts, callBack) {
   $.ajax({
       method: "POST",
-      url: url + '/receiptList',
+      url: url + '/api/receiptList',
       data: {receipts:receipts}
     })
     .done(function(data) {
@@ -121,7 +121,7 @@ Storage.setReceiptList = function(receipts, callBack) {
 Storage.getReceiptList = function(callBack) {
   $.ajax({
     method: "GET",
-    url: url + '/receiptList'
+    url: url + '/api/receiptList'
   })
   .done(function(receiptList) {
     callBack(receiptList);

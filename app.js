@@ -17,56 +17,56 @@ app.get('/', (req, res) => {
   res.sendfile('./public/index.html');
 });
 
-app.get('/html/cart', function(req, res) {
+app.get('/cart', (req, res) => {
   res.sendfile('./public/html/cart.html');
 });
 
-app.get('/html/receipt', function(req, res) {
+app.get('/receipt', (req, res) => {
   res.sendfile('./public/html/receipt.html');
 });
 
-app.get('/html/receipt-list', function(req, res) {
+app.get('/receipt-list', (req, res) => {
   res.sendfile('./public/html/receipt-list.html');
 });
 
-app.get('/allItems', function (req, res) {
-  database.connect(database.queryAllItems, function(doc) {  
+app.get('/api/allItems', (req, res) => {
+  database.connect(database.queryAllItems, (doc) => {  
     res.send(doc.allItems || []);
   });
 });
 
-app.get('/cartRecords', function (req, res) {
-  database.connect(database.queryCartRecords, function(doc) {
+app.get('/api/cartRecords', (req, res) => {
+  database.connect(database.queryCartRecords, (doc) => {
     res.send(doc.cartRecords || []);
   });
 });
 
-app.get('/clear', function (req, res) {
-  database.connect(database.clearCart, function() {
+app.get('/api/clear',  (req, res) => {
+  database.connect(database.clearCart, () => {
     res.send('succeed');
   })
 });
 
-app.post('/cartRecords', function (req, res) {
+app.post('/api/cartRecords',  (req, res) => {
   let cartRecords = req.body.cartRecords;
-  database.updateCartRecords(cartRecords, function() {
+  database.updateCartRecords(cartRecords, () => {
     res.send('succeed');
   });
 });
 
-app.get('/receiptList', function (req, res) {
-  database.connect(database.queryReceiptList, function(doc) {
+app.get('/api/receiptList',  (req, res) => {
+  database.connect(database.queryReceiptList, (doc) => {
     res.send(doc.receipts || []);
   });
 });
 
-app.post('/receiptList', function (req, res) {
+app.post('/api/receiptList',  (req, res) => {
   let receipts = req.body.receipts;
-  database.updateReceiptList(receipts, function() {
+  database.updateReceiptList(receipts, () => {
     res.send('succeed');
   });
 });
 
-app.listen(8080, function () {
+app.listen(8080,  () => {
   console.log('App listening on port 8080!');
 });

@@ -52,7 +52,7 @@ function setBtnAction() {
 
 function setCartBtnAction() {
   $('#cartBtn').click(function() {
-    window.location.href = 'cart';
+    window.location.href = '../cart';
   });
 }
 
@@ -64,7 +64,7 @@ function setLogoBtnAction() {
 
 function setReceiptBtnAction() {
   $('#receiptBtn').click(function() {
-    window.location.href = 'receipt-list';
+    window.location.href = '../receipt-list';
   });
 }
 

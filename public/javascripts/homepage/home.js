@@ -43,13 +43,13 @@ function setBtnAction() {
 
 function setCartBtnAction() {
   $('#cartBtn').click(function() {
-    window.location.href = 'html/cart';
+    window.location.href = './cart';
   });
 }
 
 function setReceiptBtnAction() {
   $('#receiptBtn').click(function() {
-    window.location.href = 'html/receipt-list';
+    window.location.href = './receipt-list';
   });
 }
 

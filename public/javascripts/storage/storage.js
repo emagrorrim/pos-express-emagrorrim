@@ -28,9 +28,14 @@ Storage.getCartCount = function(callBack) {
 
 Storage.setCartRecord = function(cartRecord, callBack) {
   Storage.getCartRecords(function(cartRecords) {
-    var record = Storage.findCartRecord(cartRecord.barcode, cartRecords)
+    operateCartRecords(cartRecord, cartRecords);
+    postCartRecords(cartRecords, callBack);
+  });
+}
 
-    if (record) {
+function operateCartRecords(cartRecord, cartRecords) {
+  var record = Storage.findCartRecord(cartRecord.barcode, cartRecords)
+  if (record) {
       record.count = cartRecord.count;
       if (cartRecord.count === 0) {
         Storage.deleteCartRecord(record, cartRecords);
@@ -38,20 +43,9 @@ Storage.setCartRecord = function(cartRecord, callBack) {
     } else if (cartRecord.count !== 0) {
       cartRecords.push(cartRecord);
     }
-    
-    postCartRecords(cartRecords, callBack);
-  });
 }
 
 function postCartRecords(cartRecords, callBack) {
-  // $.ajax({
-  //     method: "POST",
-  //     url: url + '/api/cartRecords',
-  //     data: {cartRecords:cartRecords}
-  //   })
-  //   .done(function(total) {
-  //     callBack(total);
-  //   });
   $.post('/api/cartRecords', {cartRecords:cartRecords}, function(total) {
       callBack(total);
     });

@@ -2,14 +2,10 @@ var url = 'http://localhost:8080'
 function Storage() {}
 
 Storage.getAllItems = function(callBack) {
-  $.ajax({
-    method: "GET",
-    url: url + '/api/allItems',
-  })
-  .done(function(allItems) {
+  $.get('/api/allItems', function(allItems) {
     Storage.setLocalAllItems(allItems);
     callBack(allItems);
-  });
+  })
 }
 
 Storage.setLocalAllItems = function(allItems) {
@@ -42,17 +38,21 @@ Storage.setCartRecord = function(cartRecord, callBack) {
     } else if (cartRecord.count !== 0) {
       cartRecords.push(cartRecord);
     }
+    
     postCartRecords(cartRecords, callBack);
   });
 }
 
 function postCartRecords(cartRecords, callBack) {
-  $.ajax({
-      method: "POST",
-      url: url + '/api/cartRecords',
-      data: {cartRecords:cartRecords}
-    })
-    .done(function(total) {
+  // $.ajax({
+  //     method: "POST",
+  //     url: url + '/api/cartRecords',
+  //     data: {cartRecords:cartRecords}
+  //   })
+  //   .done(function(total) {
+  //     callBack(total);
+  //   });
+  $.post('/api/cartRecords', {cartRecords:cartRecords}, function(total) {
       callBack(total);
     });
 }

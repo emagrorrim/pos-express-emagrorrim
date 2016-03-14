@@ -50,7 +50,7 @@ app.get('/api/clear',  (req, res) => {
 app.post('/api/cartRecords',  (req, res) => {
   let cartRecords = req.body.cartRecords;
   database.updateCartRecords(cartRecords, () => {
-    res.send('succeed');
+    res.send(''+cartRecords.length);
   });
 });
 

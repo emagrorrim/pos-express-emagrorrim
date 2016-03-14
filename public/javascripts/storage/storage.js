@@ -42,15 +42,19 @@ Storage.setCartRecord = function(cartRecord, callBack) {
     } else if (cartRecord.count !== 0) {
       cartRecords.push(cartRecord);
     }
-    $.ajax({
+    postCartRecords(cartRecords, callBack);
+  });
+}
+
+function postCartRecords(cartRecords, callBack) {
+  $.ajax({
       method: "POST",
       url: url + '/api/cartRecords',
       data: {cartRecords:cartRecords}
     })
-    .done(function(data) {
-      callBack();
+    .done(function(total) {
+      callBack(total);
     });
-  });
 }
 
 Storage.findCartRecord = function(barcode, cartRecords) {

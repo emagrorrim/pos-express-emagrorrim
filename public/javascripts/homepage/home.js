@@ -57,6 +57,6 @@ function setAddBtnAction() {
   $('input[name="itemCount"]').click(function() {
     var barcode = $(this).data('barcode');
     var cartRecord = { barcode: barcode, count: 1 };
-    Storage.setCartRecord(cartRecord, setupCartCount);
+    Storage.setCartRecord(cartRecord, setCartCount);
   });
 }

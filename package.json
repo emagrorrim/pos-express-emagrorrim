@@ -1,0 +1,26 @@
+{
+  "name": "pos-express-emagrorrim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emagrorrim/pos-express-emagrorrim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emagrorrim/pos-express-emagrorrim/issues"
+  },
+  "homepage": "https://github.com/emagrorrim/pos-express-emagrorrim#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.7",
+    "path": "^0.12.7"
+  }
+}

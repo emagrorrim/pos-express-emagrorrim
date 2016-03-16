@@ -2,7 +2,7 @@ var url = 'http://localhost:8080'
 function Storage() {}
 
 Storage.getAllItems = function(callBack) {
-  $.get('/api/allItems', function(allItems) {
+  $.get('/api/items', function(allItems) {
     Storage.setLocalAllItems(allItems);
     callBack(allItems);
   })
@@ -46,7 +46,7 @@ function operateCartRecords(cartRecord, cartRecords) {
 }
 
 function postCartRecords(cartRecords, callBack) {
-  $.post('/api/cartRecords', {cartRecords:cartRecords}, function(total) {
+  $.post('/api/cart', {cartRecords:cartRecords}, function(total) {
       callBack(total);
     });
 }
@@ -62,18 +62,18 @@ Storage.findCartRecord = function(barcode, cartRecords) {
 }
 
 Storage.getCartRecords = function(callBack) {
-  $.get('/api/cartRecords', function(cartRecords) {
+  $.get('/api/cart', function(cartRecords) {
     callBack(cartRecords);
   });
 }
 
 Storage.clearCart = function(callBack) {
   $.ajax({
-    method: "GET",
-    url: url + '/api/clear',
-  })
-  .done(function(data) {
-    callBack();
+    url: '/api/cart',
+    type: 'DELETE',
+    success: function(data) {
+      callBack();
+    }
   });
 }
 
@@ -102,13 +102,13 @@ Storage.storeInList = function(receipt, callBack) {
 }
 
 Storage.setReceiptList = function(receipts, callBack) {
-  $.post('/api/receiptList', {receipts:receipts}, function(data) {
+  $.post('/api/receipts', {receipts:receipts}, function(data) {
       callBack();
     });
 }
 
 Storage.getReceiptList = function(callBack) {
-  $.get('/api/receiptList', function(receiptList) {
+  $.get('/api/receipts', function(receiptList) {
     callBack(receiptList);
   });
 }

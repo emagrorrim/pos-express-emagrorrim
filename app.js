@@ -30,6 +30,6 @@ app.get('/receipt-list', (req, res) => {
   res.sendfile('./public/html/receipt-list.html');
 });
 
-app.listen(8080,  () => {
+app.listen(process.env.PORT || 8080,  () => {
   console.log('App listening on port 8080!');
 });
